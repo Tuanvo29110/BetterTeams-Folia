@@ -854,3 +854,6 @@ Improvements:
 
 Bug Fixes: 
 
+4.10.1 (Folia):
+  Bug Fixes:
+  - Fix PlayerTeleport incomplete with some plugin (Like NoCheatPlus, ...)
