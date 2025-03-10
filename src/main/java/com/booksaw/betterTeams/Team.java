@@ -11,6 +11,7 @@ import com.booksaw.betterTeams.team.*;
 import com.booksaw.betterTeams.team.storage.StorageType;
 import com.booksaw.betterTeams.team.storage.team.StoredTeamValue;
 import com.booksaw.betterTeams.team.storage.team.TeamStorage;
+import com.booksaw.betterTeams.util.FoliaUtils;
 import com.github.Anon8281.universalScheduler.UniversalRunnable;
 
 import lombok.Getter;
@@ -1057,6 +1058,9 @@ public class Team {
 	 * @return the team that has been created
 	 */
 	public org.bukkit.scoreboard.Team getScoreboardTeam(Scoreboard board) {
+		if (FoliaUtils.isFolia())
+			return null; // Folia doesn't support scoreboard stuff :(
+
 		if (team != null) {
 			return team;
 		}

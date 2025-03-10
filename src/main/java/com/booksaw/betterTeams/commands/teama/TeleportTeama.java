@@ -6,7 +6,9 @@ import com.booksaw.betterTeams.Team;
 import com.booksaw.betterTeams.commands.ParentCommand;
 import com.booksaw.betterTeams.commands.SubCommand;
 import com.booksaw.betterTeams.message.HelpMessage;
+import com.booksaw.betterTeams.util.FoliaUtils;
 import com.github.Anon8281.universalScheduler.UniversalRunnable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -214,12 +216,16 @@ public class TeleportTeama extends SubCommand {
 				if (locations.length != 1) {
 					for (int i = 0; i < targetList.size(); i++) {
 						if (locations[i] == null) continue; // Some teams may not have their home set
-						targetList.get(i).teleport(locations[i]);
+
+						final Player target = targetList.get(i);
+						final Location loc = locations[i];
+
+						FoliaUtils.teleport(target, loc);
 					}
 					return;
 				}
 				for (Player player : targetList) {
-					player.teleport(locations[0]);
+					FoliaUtils.teleport(player, locations[0]);
 				}
 			}
 

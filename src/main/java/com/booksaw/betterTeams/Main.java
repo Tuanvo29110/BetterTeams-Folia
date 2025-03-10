@@ -65,8 +65,12 @@ public class Main extends JavaPlugin {
 	private static TaskScheduler scheduler;
 	public static Economy econ = null;
 	public static Permission perms = null;
+
+	public static boolean isFolia = false;
 	public static boolean placeholderAPI = false;
+
 	public boolean useHolograms = false;
+
 	public MCTeamManagement teamManagement;
 	public ChatManagement chatManagement;
 	public WorldGuardManagerV7 wgManagement;

@@ -1,6 +1,7 @@
 package com.booksaw.betterTeams;
 
 import com.booksaw.betterTeams.message.MessageManager;
+import com.booksaw.betterTeams.util.FoliaUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -78,7 +79,7 @@ public class PlayerTeleport {
 			return;
 		}
 
-		player.teleport(location);
+		FoliaUtils.teleport(player, location);
 		MessageManager.sendMessage(player, reference);
 	}
 

@@ -4,6 +4,7 @@ import com.booksaw.betterTeams.Main;
 import com.booksaw.betterTeams.Team;
 import com.booksaw.betterTeams.customEvents.BelowNameChangeEvent;
 import com.booksaw.betterTeams.customEvents.BelowNameChangeEvent.ChangeType;
+import com.booksaw.betterTeams.util.FoliaUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,6 +43,10 @@ public class MCTeamManagement implements Listener {
 	}
 
 	public void displayBelowName(Player player) {
+
+		if (FoliaUtils.isFolia())
+			return; // Scoreboard stuff doesn't work on folia :(
+
 		player.setScoreboard(board);
 
 		Team team = Team.getTeam(player);
@@ -92,6 +97,9 @@ public class MCTeamManagement implements Listener {
 	 */
 	public void remove(Player player) {
 
+		if (FoliaUtils.isFolia())
+			return; // Scoreboard stuff doesn't work on folia :(
+
 		if (player == null) {
 			return;
 		}
@@ -119,7 +127,13 @@ public class MCTeamManagement implements Listener {
 
 	@EventHandler
 	public void playerJoinEvent(PlayerJoinEvent e) {
-		Main.getScheduler().runTaskAsynchronously(() -> displayBelowName(e.getPlayer()));
+		final Player player = e.getPlayer();
+		final Runnable runnable = () -> displayBelowName(player);
+
+		if (FoliaUtils.isFolia())
+			Main.getScheduler().runTask(player, runnable);
+		else
+			Main.getScheduler().runTaskAsynchronously(runnable);
 	}
 
 	public BelowNameType getType() {
