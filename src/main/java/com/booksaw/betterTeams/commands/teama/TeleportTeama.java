@@ -6,12 +6,12 @@ import com.booksaw.betterTeams.Team;
 import com.booksaw.betterTeams.commands.ParentCommand;
 import com.booksaw.betterTeams.commands.SubCommand;
 import com.booksaw.betterTeams.message.HelpMessage;
+import com.github.Anon8281.universalScheduler.UniversalRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -207,7 +207,7 @@ public class TeleportTeama extends SubCommand {
 			throw new IllegalArgumentException("Invalid location array - Either one location for all or separate locations for each");
 		}
 
-		new BukkitRunnable() {
+		new UniversalRunnable() {
 
 			@Override
 			public void run() {

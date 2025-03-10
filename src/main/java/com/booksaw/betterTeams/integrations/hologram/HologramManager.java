@@ -79,8 +79,7 @@ public abstract class HologramManager {
 	}
 
 	public void startUpdates() {
-		BukkitScheduler scheduler = Main.plugin.getServer().getScheduler();
-		scheduler.scheduleSyncRepeatingTask(Main.plugin, () -> {
+		Main.getScheduler().runTaskTimer(() -> {
 			if (!isHolographicDisplaysEnabled() && !isDecentHologramsEnabled()) {
 				return;
 			}
@@ -93,7 +92,7 @@ public abstract class HologramManager {
 					}
 				}
 			}
-		}, 0L, 20 * 60L);
+		}, 1L, 20 * 60L);
 	}
 
 	private boolean isHolographicDisplaysEnabled() {

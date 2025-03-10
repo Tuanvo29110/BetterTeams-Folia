@@ -6,13 +6,15 @@ import com.booksaw.betterTeams.TeamPlayer;
 import com.booksaw.betterTeams.customEvents.post.PostDemotePlayerEvent;
 import com.booksaw.betterTeams.customEvents.post.PostLevelupTeamEvent;
 import com.booksaw.betterTeams.customEvents.post.PostPromotePlayerEvent;
+import com.github.Anon8281.universalScheduler.UniversalRunnable;
+
 import me.clip.placeholderapi.PlaceholderAPI;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +45,7 @@ public class RankupEvents implements Listener {
 	}
 
 	private void runCommandList(List<String> commands, Team team, Object level, OfflinePlayer source) {
-		new BukkitRunnable() {
+		new UniversalRunnable() {
 
 			@Override
 			public void run() {

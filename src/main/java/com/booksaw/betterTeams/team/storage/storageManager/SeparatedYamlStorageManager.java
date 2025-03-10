@@ -7,6 +7,8 @@ import com.booksaw.betterTeams.team.LocationSetComponent;
 import com.booksaw.betterTeams.team.storage.team.SeparatedYamlTeamStorage;
 import com.booksaw.betterTeams.team.storage.team.StoredTeamValue;
 import com.booksaw.betterTeams.team.storage.team.TeamStorage;
+import com.github.Anon8281.universalScheduler.UniversalRunnable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -16,7 +18,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
@@ -292,7 +293,7 @@ public class SeparatedYamlStorageManager extends YamlStorageManager implements L
 		}
 
 		// purging all teams that are not loaded async to minimise server impact
-		new BukkitRunnable() {
+		new UniversalRunnable() {
 			@Override
 			public void run() {
 				for (File f : teamStorageDir.listFiles()) {

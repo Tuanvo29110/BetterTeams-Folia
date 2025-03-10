@@ -5,10 +5,11 @@ import com.booksaw.betterTeams.Main;
 import com.booksaw.betterTeams.Team;
 import com.booksaw.betterTeams.commands.SubCommand;
 import com.booksaw.betterTeams.message.MessageManager;
+import com.github.Anon8281.universalScheduler.UniversalRunnable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class TopCommand extends SubCommand {
 
 		MessageManager.sendMessage(sender, "loading");
 
-		new BukkitRunnable() {
+		new UniversalRunnable() {
 
 			@Override
 			public void run() {

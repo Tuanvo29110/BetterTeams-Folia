@@ -3,6 +3,7 @@ package com.booksaw.betterTeams;
 import com.booksaw.betterTeams.commands.ParentCommand;
 import com.booksaw.betterTeams.commands.SubCommand;
 import com.booksaw.betterTeams.message.MessageManager;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Used to register a command which uses the sub command system
@@ -55,7 +57,7 @@ public class BooksawCommand extends BukkitCommand {
 		boolean async = subCommand.checkAsync(args);
 
 		if (async) {
-			Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> runExecution(sender, label, args));
+			Main.getScheduler().runTaskAsynchronously(() -> runExecution(sender, label, args));
 		} else {
 			runExecution(sender, label, args);
 		}

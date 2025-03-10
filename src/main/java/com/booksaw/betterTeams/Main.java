@@ -33,8 +33,12 @@ import com.booksaw.betterTeams.team.storage.StorageType;
 import com.booksaw.betterTeams.team.storage.convert.Converter;
 import com.booksaw.betterTeams.team.storage.storageManager.YamlStorageManager;
 import com.booksaw.betterTeams.util.WebhookHandler;
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
+import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
+
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
@@ -58,6 +62,7 @@ import java.util.logging.Level;
 public class Main extends JavaPlugin {
 
 	public static Main plugin;
+	private static TaskScheduler scheduler;
 	public static Economy econ = null;
 	public static Permission perms = null;
 	public static boolean placeholderAPI = false;
@@ -101,6 +106,7 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		setupMetrics();
 
+		scheduler = UniversalScheduler.getScheduler(this);
 		String language = getConfig().getString("language");
 		MessageManager.setLanguage(language);
 		if (Objects.requireNonNull(language).equals("en") || language.isEmpty()) {
@@ -340,7 +346,7 @@ public class Main extends JavaPlugin {
 
 				teamManagement = new MCTeamManagement(type);
 
-				Bukkit.getScheduler().runTaskAsynchronously(this, () -> teamManagement.displayBelowNameForAll());
+				Main.getScheduler().runTaskAsynchronously(() -> teamManagement.displayBelowNameForAll());
 				getServer().getPluginManager().registerEvents(teamManagement, this);
 				Bukkit.getLogger().info("teamManagement declared: " + teamManagement);
 			}
@@ -430,5 +436,7 @@ public class Main extends JavaPlugin {
 	public PermissionParentCommand getTeamCommand() {
 		return teamCommand;
 	}
+
+	public static TaskScheduler getScheduler() { return scheduler; }
 
 }

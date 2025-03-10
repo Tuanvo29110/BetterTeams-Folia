@@ -40,20 +40,20 @@ public class PlayerTeleport {
 
 
 		if (player.hasPermission("betterteams.warmup.bypass")) {
-			Bukkit.getScheduler().runTask(Main.plugin, this::runTp);
+			Main.getScheduler().runTask(Main.plugin, this::runTp);
 			return;
 		}
 
 		int wait = Main.plugin.getConfig().getInt("tpDelay");
 		if (wait <= 0) {
-			Bukkit.getScheduler().runTask(Main.plugin, this::runTp);
+			Main.getScheduler().runTask(Main.plugin, this::runTp);
 			return;
 		}
 
 		// sending the wait message
 		MessageManager.sendMessage(player, "teleport.wait", wait);
 
-		Bukkit.getScheduler().runTaskLater(Main.plugin, () -> {
+		Main.getScheduler().runTaskLater(() -> {
 			if (canTp()) {
 				try {
 					runTp();

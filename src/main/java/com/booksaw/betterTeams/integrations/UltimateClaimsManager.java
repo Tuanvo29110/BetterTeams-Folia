@@ -14,13 +14,14 @@ import com.craftaro.ultimateclaims.claim.Claim;
 import com.craftaro.ultimateclaims.claim.ClaimDeleteReason;
 import com.craftaro.ultimateclaims.member.ClaimMember;
 import com.craftaro.ultimateclaims.member.ClaimRole;
+import com.github.Anon8281.universalScheduler.UniversalRunnable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.Objects;
@@ -74,7 +75,7 @@ public class UltimateClaimsManager implements Listener {
 				continue;
 			}
 
-			new BukkitRunnable() {
+			new UniversalRunnable() {
 
 				@Override
 				public void run() {
@@ -162,7 +163,7 @@ public class UltimateClaimsManager implements Listener {
 				continue;
 			}
 
-			new BukkitRunnable() {
+			new UniversalRunnable() {
 
 				@Override
 				public void run() {

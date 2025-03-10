@@ -11,14 +11,16 @@ import com.booksaw.betterTeams.team.*;
 import com.booksaw.betterTeams.team.storage.StorageType;
 import com.booksaw.betterTeams.team.storage.team.StoredTeamValue;
 import com.booksaw.betterTeams.team.storage.team.TeamStorage;
+import com.github.Anon8281.universalScheduler.UniversalRunnable;
+
 import lombok.Getter;
+
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -715,7 +717,7 @@ public class Team {
 			return;
 		}
 
-		new BukkitRunnable() {
+		new UniversalRunnable() {
 
 			@Override
 			public void run() {

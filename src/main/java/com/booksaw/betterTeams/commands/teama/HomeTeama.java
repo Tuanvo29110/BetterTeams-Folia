@@ -25,7 +25,7 @@ public class HomeTeama extends SubCommand {
 		}
 
 		Player p = (Player) sender;
-		Bukkit.getScheduler().runTask(Main.plugin, () -> p.teleport(team.getTeamHome()));
+		Main.getScheduler().runTask(() -> p.teleport(team.getTeamHome()));
 
 		return new CommandResponse(true, "admin.home.success");
 	}
