@@ -1,12 +1,10 @@
 package com.booksaw.betterTeams.util;
 
-import com.booksaw.betterTeams.Main;
-
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Method;
+import static com.booksaw.betterTeams.Main.plugin;
 
 public class FoliaUtils {
 
@@ -23,28 +21,36 @@ public class FoliaUtils {
 		teleport(player, location, false);
 	}
 
+	/**
+	 * Teleport player if sync or not sync.
+	 */
 	public static void teleport(final Player player, final Location location, final boolean sync) {
 		final Runnable runnable = () -> {
 			if (isFolia()) {
-				try {
-					final Class<?> clazz = Entity.class;
-					final Method method = clazz.getDeclaredMethod("teleportAsync", Location.class);
-
-					method.setAccessible(true);
-					method.invoke(player, location);
-				} catch (final Exception exception) {
-					exception.printStackTrace();
-				}
-
-				return;
+				// Using teleportAsync for Folia
+				player.teleportAsync(location);
+			} else {
+				// Using teleport for Paper/Spigot/Bukkit forks
+				player.teleport(location);
 			}
-
-			FoliaUtils.teleport(player, location);
 		};
 
-		if (sync)
-			Main.getScheduler().runTask(player, runnable);
-		else
-			runnable.run();
+		if (isFolia()) {
+			if (sync) {
+				// Run synchronous task
+				Bukkit.getRegionScheduler().execute(plugin, location, runnable);
+			} else {
+				// Run asynchronously
+				runnable.run();
+			}
+		} else {
+			if (sync) {
+				// Run synchronous task
+				Bukkit.getScheduler().runTask(plugin, runnable);
+			} else {
+				// Run asynchronously
+				runnable.run();
+			}
+		}
 	}
 }
