@@ -4,7 +4,6 @@ import com.booksaw.betterTeams.Main;
 import com.booksaw.betterTeams.Team;
 import com.booksaw.betterTeams.customEvents.BelowNameChangeEvent;
 import com.booksaw.betterTeams.customEvents.BelowNameChangeEvent.ChangeType;
-import com.booksaw.betterTeams.util.FoliaUtils;
 
 import lombok.Getter;
 
@@ -47,10 +46,6 @@ public class MCTeamManagement implements Listener {
 	}
 
 	public void displayBelowName(Player player) {
-
-		if (FoliaUtils.isFolia())
-			return; // Scoreboard stuff doesn't work on folia :(
-
 		player.setScoreboard(board);
 
 		Team team = Team.getTeam(player);
@@ -100,10 +95,6 @@ public class MCTeamManagement implements Listener {
 	 * @param player the player to remove the prefix/suffix from
 	 */
 	public void remove(Player player) {
-
-		if (FoliaUtils.isFolia())
-			return; // Scoreboard stuff doesn't work on folia :(
-
 		if (player == null) {
 			return;
 		}
@@ -125,19 +116,15 @@ public class MCTeamManagement implements Listener {
 			return;
 		}
 
-		BelowNameChangeEvent event = new BelowNameChangeEvent(player, ChangeType.REMOVE);
-		Bukkit.getPluginManager().callEvent(event);
+		Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
+			BelowNameChangeEvent event = new BelowNameChangeEvent(player, ChangeType.REMOVE);
+			Bukkit.getPluginManager().callEvent(event);
+		});
 	}
 
 	@EventHandler
 	public void playerJoinEvent(PlayerJoinEvent e) {
-		final Player player = e.getPlayer();
-		final Runnable runnable = () -> displayBelowName(player);
-
-		if (FoliaUtils.isFolia())
-			Main.getScheduler().runTask(player, runnable);
-		else
-			Main.getScheduler().runTaskAsynchronously(runnable);
+		Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> displayBelowName(e.getPlayer()));
 	}
 
 	public void setupTeam(org.bukkit.scoreboard.Team team, String teamName) {

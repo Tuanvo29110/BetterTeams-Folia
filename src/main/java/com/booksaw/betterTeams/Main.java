@@ -32,6 +32,7 @@ import com.booksaw.betterTeams.score.ScoreManagement;
 import com.booksaw.betterTeams.team.storage.StorageType;
 import com.booksaw.betterTeams.team.storage.convert.Converter;
 import com.booksaw.betterTeams.team.storage.storageManager.YamlStorageManager;
+import com.booksaw.betterTeams.util.FoliaUtils;
 import com.booksaw.betterTeams.util.WebhookHandler;
 import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
@@ -68,7 +69,6 @@ public class Main extends JavaPlugin {
 	public static Economy econ = null;
 	public static Permission perms = null;
 
-	public static boolean isFolia = false;
 	public static boolean placeholderAPI = false;
 
 	public boolean useHolograms = false;
@@ -103,7 +103,7 @@ public class Main extends JavaPlugin {
 			if (ver == '7') {
 				wgManagement = new WorldGuardManagerV7();
 			} else {
-				Bukkit.getLogger().warning("[BetterTeams] Your version of worldgaurd ("
+				Bukkit.getLogger().warning("[BetterTeams] Your version of worldguard ("
 						+ Bukkit.getPluginManager().getPlugin("WorldGuard").getDescription().getVersion()
 						+ ") is not yet supported (Currently supported: version 7.x.x), the betterteams flags will not be usable");
 			}
@@ -156,6 +156,9 @@ public class Main extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+
+		// Stop schedulers
+		Main.getScheduler().cancelTasks(this);
 
 		for (Entry<Player, Team> temp : InventoryManagement.adminViewers.entrySet()) {
 			temp.getKey().closeInventory();
@@ -349,51 +352,63 @@ public class Main extends JavaPlugin {
 		Bukkit.getLogger().info("Display team name config value: " + getConfig().getString("displayTeamName"));
 		BelowNameType type = BelowNameType.getType(Objects.requireNonNull(getConfig().getString("displayTeamName")));
 		Bukkit.getLogger().info("Loading below name. Type: " + type);
+
+		// Handle team management based on server type
 		if (getConfig().getBoolean("useTeams")) {
-			if (teamManagement == null) {
+			if (FoliaUtils.isFolia()) {
+				// Folia detected — cancel team management initialization because scoreboard stuff doesn't work on folia
+				Bukkit.getLogger().warning("Folia detected: Skipping MCTeamManagement initialization to avoid threading issues.");
+			} else {
+				// Paper/Spigot — initialize normally
+				if (teamManagement == null) {
+					teamManagement = new MCTeamManagement(type);
+					Bukkit.getLogger().info("teamManagement declared: " + teamManagement);
 
-				teamManagement = new MCTeamManagement(type);
+					// Run asynchronously for Paper/Spigot
+					Main.getScheduler().runTaskAsynchronously(() -> teamManagement.displayBelowNameForAll());
 
-				Main.getScheduler().runTaskAsynchronously(() -> teamManagement.displayBelowNameForAll());
-				getServer().getPluginManager().registerEvents(teamManagement, this);
-				Bukkit.getLogger().info("teamManagement declared: " + teamManagement);
+					// Register event listener
+					getServer().getPluginManager().registerEvents(teamManagement, this);
+				}
 			}
 		} else {
-			Bukkit.getLogger().info("Not loading management");
+			// No team management — log accordingly
+			Bukkit.getLogger().info("Not loading team management");
 			if (teamManagement != null) {
-				Bukkit.getLogger().log(Level.WARNING, "Restart server for minecraft team changes to apply");
+				Bukkit.getLogger().log(Level.WARNING, "Restart server for Minecraft team changes to apply");
 			}
 		}
 
-		// loading the zkoth event listener
+		// Load zKoth integration if present
 		if (getServer().getPluginManager().isPluginEnabled("zKoth")) {
 			Bukkit.getLogger().info("Found plugin zKoth, adding plugin integration");
 			getServer().getPluginManager().registerEvents(new ZKothManager(), this);
 		}
 
+		// Register other event listeners
 		getServer().getPluginManager().registerEvents((chatManagement = new ChatManagement()), this);
 		getServer().getPluginManager().registerEvents(new ScoreManagement(), this);
 		getServer().getPluginManager().registerEvents(new AllyManagement(), this);
 		getServer().getPluginManager().registerEvents(new MessagesManagement(), this);
 
-		// Only register webhook when hook support is enabled
+		// Only register webhook handler if hook support is enabled
 		if (getConfig().getBoolean("hookSupport")) {
 			getServer().getPluginManager().registerEvents(new WebhookHandler(), this);
 		}
 
+		// Register update checker
 		if (getConfig().getBoolean("checkUpdates")) {
 			getServer().getPluginManager().registerEvents(new UpdateChecker(this), this);
 		}
 
-		// disabling the chest checks (hoppers most importantly) to reduce needless
-		// performance cost
+		// Disable chest checks for better performance if needed
 		if (teamCommand.isEnabled("chest")) {
 			getServer().getPluginManager().registerEvents(new ChestManagement(), this);
 		}
 
+		// Register inventory and rankup events
 		getServer().getPluginManager().registerEvents(new InventoryManagement(), this);
 		getServer().getPluginManager().registerEvents(new RankupEvents(), this);
-
 	}
 
 	public void setupMetrics() {
