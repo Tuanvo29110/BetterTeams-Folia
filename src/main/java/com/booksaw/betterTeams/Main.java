@@ -36,6 +36,8 @@ import com.booksaw.betterTeams.util.WebhookHandler;
 import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 
+import lombok.Getter;
+
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -74,8 +76,10 @@ public class Main extends JavaPlugin {
 	public MCTeamManagement teamManagement;
 	public ChatManagement chatManagement;
 	public WorldGuardManagerV7 wgManagement;
+	@Getter
 	private PermissionParentCommand teamCommand;
 
+	@Getter
 	private BooksawCommand teamBooksawCommand;
 
 	private Metrics metrics = null;
@@ -433,14 +437,8 @@ public class Main extends JavaPlugin {
 		Team.getTeamManager().loadTeams();
 	}
 
-	public BooksawCommand getTeamBooksawCommand() {
-		return teamBooksawCommand;
+	public static TaskScheduler getScheduler() { 
+		return scheduler; 
 	}
-
-	public PermissionParentCommand getTeamCommand() {
-		return teamCommand;
-	}
-
-	public static TaskScheduler getScheduler() { return scheduler; }
 
 }

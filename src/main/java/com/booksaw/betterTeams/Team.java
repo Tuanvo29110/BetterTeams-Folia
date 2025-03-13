@@ -552,6 +552,7 @@ public class Team {
 		if (event.isCancelled()) {
 			throw new IllegalArgumentException("Recoloring was cancelled by another plugin");
 		}
+
 		color = event.getNewTeamColor();
 
 		final ChatColor oldColor = getColor();
@@ -776,7 +777,7 @@ public class Team {
 			return;
 		}
 
-		promotePlayer.setRank(newRank);
+		promotePlayer.setRank(event.getNewRank());
 		storage.promotePlayer(promotePlayer);
 		savePlayers();
 
@@ -807,7 +808,7 @@ public class Team {
 			return;
 		}
 
-		demotePlayer.setRank(newRank);
+		demotePlayer.setRank(event.getNewRank());
 		storage.demotePlayer(demotePlayer);
 		savePlayers();
 

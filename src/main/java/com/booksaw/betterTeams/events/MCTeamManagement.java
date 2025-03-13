@@ -5,6 +5,9 @@ import com.booksaw.betterTeams.Team;
 import com.booksaw.betterTeams.customEvents.BelowNameChangeEvent;
 import com.booksaw.betterTeams.customEvents.BelowNameChangeEvent.ChangeType;
 import com.booksaw.betterTeams.util.FoliaUtils;
+
+import lombok.Getter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,6 +24,7 @@ import java.util.UUID;
 public class MCTeamManagement implements Listener {
 
 	final Scoreboard board;
+	@Getter
 	private final BelowNameType type;
 
 	/**
@@ -134,10 +138,6 @@ public class MCTeamManagement implements Listener {
 			Main.getScheduler().runTask(player, runnable);
 		else
 			Main.getScheduler().runTaskAsynchronously(runnable);
-	}
-
-	public BelowNameType getType() {
-		return type;
 	}
 
 	public void setupTeam(org.bukkit.scoreboard.Team team, String teamName) {
