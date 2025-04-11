@@ -1,7 +1,6 @@
 package com.booksaw.betterTeams.cooldown;
 
 import com.booksaw.betterTeams.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -35,9 +34,10 @@ public class CooldownManager {
 				String[] split = temp.split(":");
 				cooldowns.put(split[0], new CommandCooldown(split[0], Integer.parseInt(split[1])));
 			} catch (Exception e) {
-				Bukkit.getLogger()
-						.info("Something went wrong while enabling a cooldown, there appears to be an error with "
+				Main.plugin.getLogger()
+						.severe("Something went wrong while enabling a cooldown, there appears to be an error with "
 								+ command + ".yml. (ERROR: " + e.getMessage() + ")");
+				Main.plugin.getLogger().severe(e.getMessage());
 
 			}
 		}
