@@ -124,7 +124,7 @@
             <artifactId>UniversalScheduler</artifactId>
             <version>0.1.6</version>
             <scope>compile</scope>
-
+        </dependency>
         <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -210,7 +210,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.11.2</version>
                 <configuration>
-                    <reportOutputDirectory>docs/javadocs</reportOutputDirectory>
+                    <outputDirectory>docs/javadocs</outputDirectory>
                     <sourcepath>src/main/java</sourcepath>
                 </configuration>
             </plugin>

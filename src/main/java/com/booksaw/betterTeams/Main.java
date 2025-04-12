@@ -34,6 +34,7 @@ import com.booksaw.betterTeams.team.storage.convert.Converter;
 import com.booksaw.betterTeams.team.storage.storageManager.YamlStorageManager;
 import com.booksaw.betterTeams.util.FoliaUtils;
 import com.booksaw.betterTeams.util.WebhookHandler;
+
 import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 
@@ -362,19 +363,15 @@ public class Main extends JavaPlugin {
 					teamManagement = new MCTeamManagement(type);
 					Bukkit.getLogger().info("teamManagement declared: " + teamManagement);
 
-					// Run asynchronously for Paper/Spigot
-					Main.getScheduler().runTaskAsynchronously(() -> teamManagement.displayBelowNameForAll());
-
-				Bukkit.getScheduler().runTaskAsynchronously(this, () -> teamManagement.displayBelowNameForAll());
-				getServer().getPluginManager().registerEvents(teamManagement, this);
-				Main.plugin.getLogger().info("teamManagement declared: " + teamManagement);
+					Bukkit.getScheduler().runTaskAsynchronously(this, () -> teamManagement.displayBelowNameForAll());
+					getServer().getPluginManager().registerEvents(teamManagement, this);
+					Main.plugin.getLogger().info("teamManagement declared: " + teamManagement);
+				} else {
+					Main.plugin.getLogger().info("Not loading management");
+					if (teamManagement != null) {
+						Main.plugin.getLogger().log(Level.WARNING, "Restart server for minecraft team changes to apply");
+				}
 			}
-		} else {
-			Main.plugin.getLogger().info("Not loading management");
-			if (teamManagement != null) {
-				Main.plugin.getLogger().log(Level.WARNING, "Restart server for minecraft team changes to apply");
-			}
-		}
 
 		// Load zKoth integration if present
 		if (getServer().getPluginManager().isPluginEnabled("zKoth")) {
@@ -449,8 +446,7 @@ public class Main extends JavaPlugin {
 		Team.getTeamManager().loadTeams();
 	}
 
-	public static TaskScheduler getScheduler() { 
+	public static TaskScheduler getScheduler() {
 		return scheduler; 
 	}
-
 }
