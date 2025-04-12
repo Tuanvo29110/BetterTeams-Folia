@@ -119,11 +119,18 @@
             <version>3.0.2</version>
             <scope>compile</scope>
         </dependency>
+        <!--UniversalScheduler-->
         <dependency>
             <groupId>com.github.Anon8281</groupId>
             <artifactId>UniversalScheduler</artifactId>
             <version>0.1.6</version>
             <scope>compile</scope>
+        </dependency>
+        <!--Apache Commons Lang-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.17.0</version>
         </dependency>
         <!-- JUnit 5 -->
         <dependency>
@@ -145,6 +152,11 @@
             <artifactId>assertj-core</artifactId>
             <version>3.27.3</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
         </dependency>
     </dependencies>
 
